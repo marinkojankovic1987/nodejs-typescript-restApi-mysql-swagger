@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', routes());
 app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ status: "Welcome to vindex" });
+  res.status(200).json({ status: "Welcome to RestApi" });
 });
 
 app.set("port", (<any>config).port);
