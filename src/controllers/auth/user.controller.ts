@@ -2,7 +2,7 @@ import { Injector } from '../../dependency-injections/injector';
 import QueryService from '../../services/querys.service';
 import { createPassword } from '../../services/common.service';
 import { getUserById } from '../../services/utils.service';
-import User from '../../models/user';
+import User from '../../models/user.model';
 
 const querys = Injector.resolve<QueryService>(QueryService);
 

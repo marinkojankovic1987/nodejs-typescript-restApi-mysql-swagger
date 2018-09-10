@@ -1,12 +1,11 @@
 import { Injector } from '../../dependency-injections/injector';
 import QueryService from '../../services/querys.service';
-import User from '../../models/user'
+import User from '../../models/user.model'
 
 const querys = Injector.resolve<QueryService>(QueryService);
 
 
 const register = (req, res) => {
-
     let _user = new  User(
         req.body.user_name,
         req.body.password,            
@@ -20,7 +19,7 @@ const register = (req, res) => {
         req.body.city,
         req.body.country
     );
-
+   
 querys.insertData('users', _user).then((result) => {
     res.status(201).json({ 'message': 'Succes add user' });
 }).catch((err) => {

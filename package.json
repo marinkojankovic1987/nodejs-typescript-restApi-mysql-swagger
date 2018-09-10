@@ -38,6 +38,7 @@
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.0",
     "mysql": "^2.16.0",
+    "nodemailer": "^4.6.8",
     "reflect-metadata": "^0.1.12",
     "swagger-ui-express": "3.0.10",
     "ts-loader": "^4.5.0",
