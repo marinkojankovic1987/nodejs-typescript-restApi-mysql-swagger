@@ -1,10 +1,14 @@
 import * as bcrypt from "bcrypt";
 import * as jwt from 'jsonwebtoken';
-const config = require('../configs/config.json');
-
+import * as crypto from 'crypto';
+import {JWT_SECRET} from '../configs/config';
 
 const createId = (letters) => {
     return letters + (new Date().valueOf()).toString();
+}
+
+const createHash = () => {
+    return crypto.createHash('sha1').update((new Date()).valueOf().toString() +  Math.random().toString()).digest('hex');
 }
 
 const createPassword = (password) => {
@@ -32,8 +36,7 @@ const setAuth = (req, res, next) => {
 
     if (req.hasOwnProperty('headers') && req.headers.hasOwnProperty('authorization')) {
         try {
-            // console.log(jwt.verify(req.headers['authorization'], config.JWT_SECRET)['user']);
-            req.user = jwt.verify(req.headers['authorization'], config.JWT_SECRET)['user'];
+            req.user = jwt.verify(req.headers['authorization'], JWT_SECRET)['user'];
         } catch (err) {
             /*
              * If the authorization header is corrupted, it throws exception
@@ -56,4 +59,4 @@ const setAuth = (req, res, next) => {
     return;
 }
 
-export { createId, createPassword, isJson, setValue, setAuth };
+export { createId, createPassword, isJson, setValue, setAuth, createHash };

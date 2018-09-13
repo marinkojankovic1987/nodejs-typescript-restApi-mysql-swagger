@@ -1,4 +1,4 @@
-import { createId, createPassword } from '../services/common.service';  
+import { createId, createPassword, createHash } from '../services/common.service';  
 export interface HashInterface{
     id:string,
     hash: string;
@@ -24,7 +24,7 @@ class Hash implements HashInterface{
         public data: any,
     ) {
         this.id = createId('h');
-        this.hash = 'ccc';
+        this.hash = createHash();
         this.expired = false;
         this.expire_after_first_access = expire_after_first_access;
         this.time_to_live = time_to_live;

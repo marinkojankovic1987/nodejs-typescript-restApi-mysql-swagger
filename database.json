@@ -2,7 +2,7 @@
     "dev": {
         "driver": "mysql",
         "user": "root",
-        "password": "123",
+        "password": "",
         "database":"mytest"
     }
 }

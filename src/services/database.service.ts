@@ -1,15 +1,15 @@
 import * as mysql from 'mysql';
-import {Service} from '../dependency-injections/decorators';
-const config = require('../configs/config.json');
+import { Service } from '../dependency-injections/decorators';
+import { DB_CONNECTION, DB_DATABASE, DB_HOST, DB_PASSWORD, DB_USERNAME } from '../configs/config';
 
 @Service()
 class DataBaseService {
-    dbPool:any;
-    dbConfig:any = {
-        host: (<any>config).database.host,
-        user: (<any>config).database.user,
-        password: (<any>config).database.password,
-        database: (<any>config).database.database
+    dbPool: any;
+    dbConfig: any = {
+        host: DB_HOST,
+        user: DB_USERNAME,
+        password: DB_PASSWORD,
+        database: DB_DATABASE
     }
 
     constructor() {

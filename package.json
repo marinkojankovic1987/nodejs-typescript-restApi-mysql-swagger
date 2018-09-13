@@ -25,6 +25,7 @@
   "author": "Marinko Jankovic",
   "license": "MIT",
   "dependencies": {
+    "@types/dotenv": "^4.0.3",
     "@types/express": "^4.11.0",
     "@types/jsonwebtoken": "^7.2.8",
     "bcrypt": "^3.0.0",
@@ -46,6 +47,7 @@
     "webpack-watch-server": "^1.2.1"
   },
   "devDependencies": {
+    "dotenv": "^6.0.0",
     "nodemon": "^1.18.3",
     "ts-node": "^7.0.1",
     "tslint": "^5.1.0",

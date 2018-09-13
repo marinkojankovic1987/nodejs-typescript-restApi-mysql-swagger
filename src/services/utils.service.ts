@@ -3,7 +3,6 @@ import QueryService from './querys.service';
 
 const querys = Injector.resolve<QueryService>(QueryService);
 
-
 export function createId(letters) {
     return letters + (new Date().valueOf()).toString();
 }

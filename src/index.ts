@@ -6,12 +6,13 @@ import * as http from 'http';
 import * as morgan from 'morgan';
 import routes from './routes';
 import * as swaggerUi from 'swagger-ui-express';
+import * as dotenv from "dotenv";
+import {PORT, CORS_HEADER} from './configs/config';
 
-const config = require('./configs/config.json');
+
 const swaggerDocument = require('./swagger.json');
 
 var app: express.Application = express()
-
 
 http.createServer(app);
 
@@ -20,7 +21,7 @@ app.use(morgan('dev'));
 
 // use cors
 app.use(cors({
-  exposedHeaders: (<any>config).corsHeaders
+  exposedHeaders: CORS_HEADER
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -34,10 +35,11 @@ app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ status: "Welcome to RestApi" });
 });
 
-app.set("port", (<any>config).port);
+app.set("port", PORT);
 
 var httpServer = http.createServer(app);
 
-httpServer.listen((<any>config).port, (data) => {
-  console.log(`Listening on port ${(<any>config).port}`)
+
+httpServer.listen(PORT, (data) => {
+  console.log(`Listening on port ${PORT}`)
 });
