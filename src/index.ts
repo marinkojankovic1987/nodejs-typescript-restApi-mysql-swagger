@@ -7,15 +7,13 @@ import * as morgan from 'morgan';
 import routes from './routes';
 import * as swaggerUi from 'swagger-ui-express';
 import * as dotenv from "dotenv";
-import {PORT, CORS_HEADER} from './configs/config';
-
+import { PORT, CORS_HEADER } from './configs/config';
 
 const swaggerDocument = require('./swagger.json');
 
 var app: express.Application = express()
 
 http.createServer(app);
-
 // logger
 app.use(morgan('dev'));
 

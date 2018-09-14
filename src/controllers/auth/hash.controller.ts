@@ -3,6 +3,7 @@ import QueryService from '../../services/querys.service';
 import NodeMailerService from '../../services/nodemailer.service';
 import TemplateService from '../../services/template.service';
 import { createPassword } from '../../services/common.service';
+import { getGlobalError, getHttpError } from '../../maps/error/error';
 import Hash from '../../models/hash2params.model';
 
 
@@ -14,7 +15,7 @@ const templates = Injector.resolve<TemplateService>(TemplateService);
 const storeToHashTable = (req, res) => {
 
     const email = req.body.email;
-    const expired = req.body.email;
+    const expired = req.body.expired;
 
     querys.customQuery(
         'select user_name ' +
@@ -23,7 +24,7 @@ const storeToHashTable = (req, res) => {
     ).then((result: any) => {
         if (result.length == 0) {
             res.status(404).json({
-                message: 'User not exist in our system'
+                message: getHttpError(404)
             });
         }
         else {
@@ -31,7 +32,7 @@ const storeToHashTable = (req, res) => {
         }
     }).catch((err) => {
         res.status(400).json({
-            message: 'Unexpected error'
+            message: err
         });
     })
 }
@@ -45,7 +46,7 @@ const getDataFromHashTable = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: 'Hash not exist in our system'
+                message: getHttpError(404)
             });
         }
         else {
@@ -53,7 +54,7 @@ const getDataFromHashTable = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("isValid")) {
                 res.status(400).json({
-                    message: 'This Sesion is expired'
+                    message: getGlobalError(0)
                 });
             }
             let createdDate = new Date(foundedHash.created);
@@ -61,7 +62,7 @@ const getDataFromHashTable = (req, res) => {
 
             if (expareDate < new Date()) {
                 res.status(400).json({
-                    message: 'This Sesion is expired'
+                    message: getGlobalError(0)
                 });
             }
 
@@ -69,14 +70,14 @@ const getDataFromHashTable = (req, res) => {
                 updateHashTable(res, foundedHash.id, dataFromHash.email, false, true)
             } else {
                 res.status(200).json({
-                    message: 'Ok'
+                    message: getHttpError(200)
                 });
             }
         }
 
     }).catch((err) => {
         res.status(400).json({
-            message: 'Unexpected error'
+            message: err
 
         });
     })
@@ -91,7 +92,7 @@ const changePasswordByHash = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: 'Hash not exist in our system'
+                message: getHttpError(404)
             });
         }
         else {
@@ -99,7 +100,7 @@ const changePasswordByHash = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("canUse") && !dataFromHash.canUse) {
                 res.status(400).json({
-                    message: 'This Sesion is expired'
+                    message: getGlobalError(0)
                 });
             }
             querys.customQuery(
@@ -122,13 +123,14 @@ const changePasswordByHash = (req, res) => {
         }
     }).catch((err) => {
         res.status(400).json({
-            message: 'Unexpected error'
+            message: err
 
         });
     })
 }
 
 const insertToHashTableAndSendMail = (res, email, expired, template) => {
+
     let _hash = new Hash(
         expired,
         3600,
@@ -139,7 +141,7 @@ const insertToHashTableAndSendMail = (res, email, expired, template) => {
 
     querys.insertData('hash_2_params', _hash).then((result) => {
         nodeMailer.sendMail(email, templates.getTitle(template), templates.getTemplate(template, _hash.hash));
-        res.status(201).json({ 'message': 'Go to mail' });
+        res.status(201).json({ 'message': getGlobalError(1) });
 
     }).catch((err) => {
         res.status(400).json({ 'message': err })
@@ -155,7 +157,7 @@ const activateUser = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: 'Hash not exist in our system'
+                message: getHttpError(404)
             });
         }
         else {
@@ -163,7 +165,7 @@ const activateUser = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("canUse") && !dataFromHash.canUse) {
                 res.status(400).json({
-                    message: 'This Sesion is expired'
+                    message: getGlobalError(0)
                 });
             }
             querys.customQuery(
@@ -186,7 +188,7 @@ const activateUser = (req, res) => {
         }
     }).catch((err) => {
         res.status(400).json({
-            message: 'Unexpected error'
+            message: err
 
         });
     })
@@ -200,7 +202,7 @@ function updateHashTable(res, id, email, isValid, canUse) {
 
     querys.updateData('hash_2_params', { data: JSON.stringify(dataForUpdate) }, id).then((result) => {
         res.status(200).json({
-            message: 'Ok'
+            message: getGlobalError(200)
         });
     }).catch((err) => {
         res.status(400).json({ 'message': err })

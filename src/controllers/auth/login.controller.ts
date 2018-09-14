@@ -12,7 +12,7 @@ const login = (req, res) => {
     return querys.getSomeFieldsByField('users', ['user_name', 'password'], 'user_name', req.body.user_name)
         .then((result:any) => {
             if (result.length == 0) {
-                res.status(401).json({
+                res.status(404).json({
                     message: 'Wrong username'
                 });
             }
@@ -24,7 +24,7 @@ const login = (req, res) => {
                             token: jwt.sign({user}, JWT_SECRET, { expiresIn: 6 * 3600 })
                         });
                     }).catch((err) => {
-                        res.status(401).json({
+                        res.status(404).json({
                             message: 'No user in system'
 
                         });

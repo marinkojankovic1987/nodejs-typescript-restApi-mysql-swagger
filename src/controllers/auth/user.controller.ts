@@ -28,7 +28,7 @@ const list = (req, res) => {
     let fields, filter, terms_value, offset, limit;
     if (req.query['fields']) {
         fields = req.query['fields'];
-        console.log(fields)
+        // console.log(fields)
     }
     else {
         fields = '*';
