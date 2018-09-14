@@ -48,7 +48,7 @@ class User implements UserInterface{
         this.role = role;
         this.city = city;
         this.country = country;
-        this.is_active = true;
+        this.is_active = false;
         this.created = new Date();
         this.updated = new Date();
     }

@@ -16,6 +16,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const PORT = process.env.PORT;
+export const HOST = process.env.HOST;
+export const APP_NAME = process.env.APP_NAME;
 export const CORS_HEADER = process.env.CORS_HEADER;
 export const JWT_SECRET = process.env.JWT_SECRET;
 
