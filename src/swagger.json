@@ -2,7 +2,7 @@
   "swagger": "2.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Vindex Api",
+    "title": "Rest Api",
     "description": "It's all Application API",
     "license": {
       "name": "MIT",
@@ -81,6 +81,114 @@
             "schema": {
               "$ref": "#/definitions/Register"
             }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Activate user in the app",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Activate user in the app"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "If user forgot password",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "It's must to be object with more fields",
+            "schema": {
+              "$ref": "#/definitions/ForgotPassword"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Forgot password",
+            "schema": {
+              "$ref": "#/definitions/ForgotPassword"
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password/{hash}": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Change password by user",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "description": "It's must to be object with password key",
+            "schema": {
+              "$ref": "#/definitions/ChangePassword"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Change password",
+            "schema": {
+              "$ref": "#/definitions/ChangePassword"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Check is hash valid",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Check is hash valid"
           }
         }
       }
@@ -333,6 +441,33 @@
         },
         "country": {
           "type": "string"
+        }
+      }
+    },
+    "ForgotPassword": {
+      "required": [
+        "email",
+        "expired"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "expired": {
+          "type": "boolean",
+          "uniqueItems": false
+        }
+      }
+    },
+    "ChangePassword": {
+      "required": [
+        "password"
+      ],
+      "properties": {
+        "password": {
+          "type": "string",
+          "uniqueItems": true
         }
       }
     },
