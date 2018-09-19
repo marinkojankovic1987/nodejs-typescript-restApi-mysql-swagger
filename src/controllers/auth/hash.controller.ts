@@ -3,7 +3,7 @@ import QueryService from '../../services/querys.service';
 import NodeMailerService from '../../services/nodemailer.service';
 import TemplateService from '../../services/template.service';
 import { createPassword } from '../../services/common.service';
-import { getGlobalError, getHttpError } from '../../maps/error/error';
+import { getGlobalMessage, getHttpMessage } from '../../maps/messages/message';
 import Hash from '../../models/hash2params.model';
 
 
@@ -24,7 +24,7 @@ const storeToHashTable = (req, res) => {
     ).then((result: any) => {
         if (result.length == 0) {
             res.status(404).json({
-                message: getHttpError(404)
+                message: getHttpMessage(404)
             });
         }
         else {
@@ -46,7 +46,7 @@ const getDataFromHashTable = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: getHttpError(404)
+                message: getHttpMessage(404)
             });
         }
         else {
@@ -54,7 +54,7 @@ const getDataFromHashTable = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("isValid")) {
                 res.status(400).json({
-                    message: getGlobalError(0)
+                    message: getGlobalMessage(0)
                 });
             }
             let createdDate = new Date(foundedHash.created);
@@ -62,7 +62,7 @@ const getDataFromHashTable = (req, res) => {
 
             if (expareDate < new Date()) {
                 res.status(400).json({
-                    message: getGlobalError(0)
+                    message: getGlobalMessage(0)
                 });
             }
 
@@ -70,7 +70,7 @@ const getDataFromHashTable = (req, res) => {
                 updateHashTable(res, foundedHash.id, dataFromHash.email, false, true)
             } else {
                 res.status(200).json({
-                    message: getHttpError(200)
+                    message: getHttpMessage(200)
                 });
             }
         }
@@ -92,7 +92,7 @@ const changePasswordByHash = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: getHttpError(404)
+                message: getHttpMessage(404)
             });
         }
         else {
@@ -100,7 +100,7 @@ const changePasswordByHash = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("canUse") && !dataFromHash.canUse) {
                 res.status(400).json({
-                    message: getGlobalError(0)
+                    message: getGlobalMessage(0)
                 });
             }
             querys.customQuery(
@@ -141,7 +141,7 @@ const insertToHashTableAndSendMail = (res, email, expired, template) => {
 
     querys.insertData('hash_2_params', _hash).then((result) => {
         nodeMailer.sendMail(email, templates.getTitle(template), templates.getTemplate(template, _hash.hash));
-        res.status(201).json({ 'message': getGlobalError(1) });
+        res.status(201).json({ 'message': getGlobalMessage(1) });
 
     }).catch((err) => {
         res.status(400).json({ 'message': err })
@@ -157,7 +157,7 @@ const activateUser = (req, res) => {
         console.log(result);
         if (result.length == 0) {
             res.status(404).json({
-                message: getHttpError(404)
+                message: getHttpMessage(404)
             });
         }
         else {
@@ -165,7 +165,7 @@ const activateUser = (req, res) => {
             let dataFromHash = JSON.parse(foundedHash.data);
             if (dataFromHash.hasOwnProperty("canUse") && !dataFromHash.canUse) {
                 res.status(400).json({
-                    message: getGlobalError(0)
+                    message: getGlobalMessage(0)
                 });
             }
             querys.customQuery(
@@ -202,7 +202,7 @@ function updateHashTable(res, id, email, isValid, canUse) {
 
     querys.updateData('hash_2_params', { data: JSON.stringify(dataForUpdate) }, id).then((result) => {
         res.status(200).json({
-            message: getGlobalError(200)
+            message: getHttpMessage(200)
         });
     }).catch((err) => {
         res.status(400).json({ 'message': err })

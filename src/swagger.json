@@ -83,7 +83,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/auth/register/{hash}": {
       "get": {
         "tags": [
           "Auth"

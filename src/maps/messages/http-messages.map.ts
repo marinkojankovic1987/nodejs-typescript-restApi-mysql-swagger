@@ -1,4 +1,4 @@
-const errors:any = {
+const messages:any = {
     100 :'CONTINUE',
     101 :'SWITCHING_PROTOCOLS',
     102 :'PROCESSING',
@@ -64,4 +64,4 @@ const errors:any = {
     599 :'NETWORK_CONNECT_TIMEOUT_ERROR'
 }
 
-export default errors;
+export default messages;
